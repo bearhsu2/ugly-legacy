@@ -1,0 +1,53 @@
+package idv.kuma;
+
+import java.util.*;
+
+public class OrderProcessor {
+
+    public void process(List<Map<String, Object>> l, String t, boolean f) {
+        double d = 0;
+
+        if (l != null && l.size() > 0) {
+            for (Map<String, Object> i : l) {
+                double p = (double) i.get("p");
+                int q = (int) i.get("q");
+                if (p > 0 && q > 0) {
+                    d += p * q;
+                }
+            }
+
+            // --- 新增的隨機混亂邏輯 ---
+            if (d > 500) {
+                // 直接在方法裡面 new Random，測試人員會想哭
+                Random r = new Random();
+                if (r.nextBoolean()) { // 50% 機率
+                    double rd = 0.01 + (0.1 - 0.01) * r.nextDouble(); // 1% ~ 10% 隨機
+                    System.out.println("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
+                    d = d * (1 - rd);
+                }
+            }
+            // -----------------------
+
+            if (t.equals("VIP")) {
+                if (d > 1000) d = d * 0.85;
+                else d = d * 0.9;
+            } else if (t.equals("GOLD")) {
+                d = d * 0.95;
+            } else {
+                if (d > 500) d = d - 20;
+            }
+
+            if (f) {
+                if (!(t.equals("VIP") && d > 500)) d = d + 60;
+            }
+
+            System.out.println("Customer Type: " + t);
+            System.out.println("Total Price: " + Math.round(d * 100.0) / 100.0);
+
+            if (d > 1000) System.out.println("Status: Large Order");
+            else System.out.println("Status: Normal Order");
+        } else {
+            System.out.println("No items to process.");
+        }
+    }
+}
