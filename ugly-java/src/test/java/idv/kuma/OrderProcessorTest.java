@@ -1,6 +1,7 @@
 package idv.kuma;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,43 +11,56 @@ import java.util.Random;
 
 class OrderProcessorTest {
 
+    private OrderProcessor sut;
+    private List<Map<String, Object>> order;
+
+    @BeforeEach
+    void setUp() {
+        sut = new FakeOrderProcessor();
+    }
+
     @Test
     void random_discount_LUCKY() {
 
-        OrderProcessor sut = new FakeOrderProcessor();
+        given_order(item(1000D, 1));
 
-        List<Map<String, Object>> order = List.of(
-                Map.of("p", 1000D, "q", 1)
+        when_process();
+
+        then_messages("LUCKY! You got a random discount: 1%",
+                "Customer Type: ORDINARY",
+                "Total Price: 970.0",
+                "Status: Normal Order"
         );
 
+    }
+
+    private void given_order(Map<String, Object>... items) {
+        order = List.of(items);
+    }
+
+    private Map<String, Object> item(double price, int quantity) {
+        return Map.of("p", price, "q", quantity);
+    }
+
+    private void when_process() {
         sut.process(order, "ORDINARY", false);
+    }
+
+    private void then_messages(String... messages) {
 
         Assertions.assertThat(((FakeOrderProcessor) sut).messages)
-                .containsExactly("LUCKY! You got a random discount: 1%",
-                        "Customer Type: ORDINARY",
-                        "Total Price: 970.0",
-                        "Status: Normal Order"
-                );
-
+                .containsExactly(messages);
     }
 
     @Test
     void no_discounts() {
 
-        OrderProcessor sut = new FakeOrderProcessor();
 
-        List<Map<String, Object>> order = List.of(
-                Map.of("p", 100D, "q", 1),
-                Map.of("p", 20D, "q", 2)
-        );
+        given_order(item(100D, 1), item(20D, 2));
 
-        sut.process(order, "ORDINARY", false);
+        when_process();
 
-        Assertions.assertThat(((FakeOrderProcessor) sut).messages)
-                .containsExactly("Customer Type: ORDINARY",
-                        "Total Price: 140.0",
-                        "Status: Normal Order"
-                );
+        then_messages("Customer Type: ORDINARY", "Total Price: 140.0", "Status: Normal Order");
 
     }
 
