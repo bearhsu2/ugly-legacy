@@ -22,7 +22,7 @@ public class OrderProcessor {
                 Random r = new Random();
                 if (r.nextBoolean()) { // 50% 機率
                     double rd = 0.01 + (0.1 - 0.01) * r.nextDouble(); // 1% ~ 10% 隨機
-                    System.out.println("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
+                    print("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
                     d = d * (1 - rd);
                 }
             }
@@ -41,13 +41,17 @@ public class OrderProcessor {
                 if (!(t.equals("VIP") && d > 500)) d = d + 60;
             }
 
-            System.out.println("Customer Type: " + t);
-            System.out.println("Total Price: " + Math.round(d * 100.0) / 100.0);
+            print("Customer Type: " + t);
+            print("Total Price: " + Math.round(d * 100.0) / 100.0);
 
-            if (d > 1000) System.out.println("Status: Large Order");
-            else System.out.println("Status: Normal Order");
+            if (d > 1000) print("Status: Large Order");
+            else print("Status: Normal Order");
         } else {
-            System.out.println("No items to process.");
+            print("No items to process.");
         }
+    }
+
+    protected void print(String message) {
+        System.out.println(message);
     }
 }

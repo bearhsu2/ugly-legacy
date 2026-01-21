@@ -3,6 +3,7 @@ package idv.kuma;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ class OrderProcessorTest {
     @Test
     void no_discounts() {
 
-        OrderProcessor sut = new OrderProcessor();
+        OrderProcessor sut = new FakeOrderProcessor();
 
         List<Map<String, Object>> order = List.of(
                 Map.of("p", 100D, "q", 1),
@@ -20,8 +21,22 @@ class OrderProcessorTest {
 
         sut.process(order, "NORMAL", false);
 
-        // 不是我不測，靠北你寫這麼爛的 code 是要給鬼測嗎？
-//        Assertions.assertThat( ? ? ?).isEqualTo(140D);
+        Assertions.assertThat(((FakeOrderProcessor) sut).messages)
+                .containsExactly("Customer Type: NORMAL",
+                        "Total Price: 140.0",
+                        "Status: Normal Order"
+                );
 
+    }
+
+    private class FakeOrderProcessor extends OrderProcessor {
+
+
+        private List<String> messages = new ArrayList<>();
+
+        @Override
+        protected void print(String message) {
+            this.messages.add(message);
+        }
     }
 }
