@@ -21,7 +21,7 @@ class OrderProcessorTest {
         sut.process(order, "NORMAL", false);
 
         // 不是我不測，靠北你寫這麼爛的 code 是要給鬼測嗎？
-        Assertions.assertThat( ? ? ?).isEqualTo(140D);
+//        Assertions.assertThat( ? ? ?).isEqualTo(140D);
 
     }
 }
