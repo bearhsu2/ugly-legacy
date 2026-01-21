@@ -19,7 +19,7 @@ public class OrderProcessor {
             }
 
             if (d > 500) {
-                Random r = new Random();
+                Random r = getRandom();
                 if (r.nextBoolean()) { // 50% 機率
                     double rd = 0.01 + (0.1 - 0.01) * r.nextDouble(); // 1% ~ 10% 隨機
                     print("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
@@ -49,6 +49,10 @@ public class OrderProcessor {
         } else {
             print("No items to process.");
         }
+    }
+
+    protected Random getRandom() {
+        return new Random();
     }
 
     protected void print(String message) {
