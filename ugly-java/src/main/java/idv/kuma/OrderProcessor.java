@@ -1,6 +1,8 @@
 package idv.kuma;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class OrderProcessor {
 
@@ -16,9 +18,7 @@ public class OrderProcessor {
                 }
             }
 
-            // --- 新增的隨機混亂邏輯 ---
             if (d > 500) {
-                // 直接在方法裡面 new Random，測試人員會想哭
                 Random r = new Random();
                 if (r.nextBoolean()) { // 50% 機率
                     double rd = 0.01 + (0.1 - 0.01) * r.nextDouble(); // 1% ~ 10% 隨機
