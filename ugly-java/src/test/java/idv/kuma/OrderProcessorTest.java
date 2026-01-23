@@ -11,17 +11,18 @@ import java.util.Random;
 class OrderProcessorTest {
 
     private final boolean LUCKY = true;
+    private final boolean SHIPPING_ENABLED = true;
     private OrderProcessor sut;
     private List<Map<String, Object>> order;
 
     @Test
-    void ORDINARY_expensive() {
+    void shipping_enabled() {
 
         given_sut(!LUCKY);
 
         given_order(item(501D, 1));
 
-        when_process("ORDINARY");
+        when_process("ORDINARY", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: ORDINARY",
                 "Total Price: 481.0",
@@ -42,8 +43,8 @@ class OrderProcessorTest {
         return Map.of("p", price, "q", quantity);
     }
 
-    private void when_process(String userType) {
-        sut.process(order, userType, false);
+    private void when_process(String userType, boolean shippingEnabled) {
+        sut.process(order, userType, shippingEnabled);
     }
 
     private void then_messages(String... messages) {
@@ -53,13 +54,29 @@ class OrderProcessorTest {
     }
 
     @Test
+    void ORDINARY_expensive() {
+
+        given_sut(!LUCKY);
+
+        given_order(item(501D, 1));
+
+        when_process("ORDINARY", !SHIPPING_ENABLED);
+
+        then_messages("Customer Type: ORDINARY",
+                "Total Price: 481.0",
+                "Status: Normal Order"
+        );
+
+    }
+
+    @Test
     void GOLD() {
 
         given_sut(!LUCKY);
 
         given_order(item(1000D, 1));
 
-        when_process("GOLD");
+        when_process("GOLD", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: GOLD",
                 "Total Price: 950.0",
@@ -75,7 +92,7 @@ class OrderProcessorTest {
 
         given_order(item(900D, 1));
 
-        when_process("VIP");
+        when_process("VIP", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: VIP",
                 "Total Price: 810.0",
@@ -91,7 +108,7 @@ class OrderProcessorTest {
 
         given_order(item(2_000D, 1));
 
-        when_process("VIP");
+        when_process("VIP", false);
 
         then_messages("Customer Type: VIP",
                 "Total Price: 1700.0",
@@ -107,7 +124,7 @@ class OrderProcessorTest {
 
         given_order(item(1_000D, 1));
 
-        when_process("ORDINARY");
+        when_process("ORDINARY", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: ORDINARY",
                 "Total Price: 980.0",
@@ -123,7 +140,7 @@ class OrderProcessorTest {
 
         given_order(item(1_000D, 1));
 
-        when_process("ORDINARY");
+        when_process("ORDINARY", !SHIPPING_ENABLED);
 
         then_messages("LUCKY! You got a random discount: 1%",
                 "Customer Type: ORDINARY",
@@ -143,7 +160,7 @@ class OrderProcessorTest {
                 item(20D, 2)
         );
 
-        when_process("ORDINARY");
+        when_process("ORDINARY", false);
 
         then_messages("Customer Type: ORDINARY", "Total Price: 140.0", "Status: Normal Order");
 
