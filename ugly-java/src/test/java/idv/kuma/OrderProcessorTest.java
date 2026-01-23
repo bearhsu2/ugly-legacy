@@ -16,6 +16,37 @@ class OrderProcessorTest {
     private List<Map<String, Object>> order;
 
     @Test
+    void no_items() {
+
+        given_sut(!LUCKY);
+
+        given_order();
+
+        when_process("VIP", SHIPPING_ENABLED);
+
+        then_messages("No items to process.");
+
+    }
+
+    private void given_sut(boolean nextBoolean) {
+        sut = new FakeOrderProcessor(nextBoolean);
+    }
+
+    private void given_order(Map<String, Object>... items) {
+        order = List.of(items);
+    }
+
+    private void when_process(String userType, boolean shippingEnabled) {
+        sut.process(order, userType, shippingEnabled);
+    }
+
+    private void then_messages(String... messages) {
+
+        Assertions.assertThat(((FakeOrderProcessor) sut).messages)
+                .containsExactly(messages);
+    }
+
+    @Test
     void shipping_enabled_and_NOT_NEED_to_pay() {
 
         given_sut(!LUCKY);
@@ -31,26 +62,8 @@ class OrderProcessorTest {
 
     }
 
-    private void given_sut(boolean nextBoolean) {
-        sut = new FakeOrderProcessor(nextBoolean);
-    }
-
-    private void given_order(Map<String, Object>... items) {
-        order = List.of(items);
-    }
-
     private Map<String, Object> item(double price, int quantity) {
         return Map.of("p", price, "q", quantity);
-    }
-
-    private void when_process(String userType, boolean shippingEnabled) {
-        sut.process(order, userType, shippingEnabled);
-    }
-
-    private void then_messages(String... messages) {
-
-        Assertions.assertThat(((FakeOrderProcessor) sut).messages)
-                .containsExactly(messages);
     }
 
     @Test
