@@ -1,7 +1,6 @@
 package idv.kuma;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,24 +13,24 @@ class OrderProcessorTest {
     private OrderProcessor sut;
     private List<Map<String, Object>> order;
 
-    @BeforeEach
-    void setUp() {
-        sut = new FakeOrderProcessor();
-    }
-
     @Test
-    void random_discount_LUCKY() {
+    void random_discount_UNLUCKY() {
 
-        given_order(item(1000D, 1));
+        given_sut(false);
+
+        given_order(item(1_000D, 1));
 
         when_process();
 
-        then_messages("LUCKY! You got a random discount: 1%",
-                "Customer Type: ORDINARY",
-                "Total Price: 970.0",
+        then_messages("Customer Type: ORDINARY",
+                "Total Price: 980.0",
                 "Status: Normal Order"
         );
 
+    }
+
+    private void given_sut(boolean nextBoolean) {
+        sut = new FakeOrderProcessor(nextBoolean);
     }
 
     private void given_order(Map<String, Object>... items) {
@@ -53,10 +52,31 @@ class OrderProcessorTest {
     }
 
     @Test
+    void random_discount_LUCKY() {
+
+        given_sut(true);
+
+        given_order(item(1_000D, 1));
+
+        when_process();
+
+        then_messages("LUCKY! You got a random discount: 1%",
+                "Customer Type: ORDINARY",
+                "Total Price: 970.0",
+                "Status: Normal Order"
+        );
+
+    }
+
+    @Test
     void no_discounts() {
 
+        given_sut(true);
 
-        given_order(item(100D, 1), item(20D, 2));
+        given_order(
+                item(100D, 1),
+                item(20D, 2)
+        );
 
         when_process();
 
@@ -68,10 +88,15 @@ class OrderProcessorTest {
 
 
         private List<String> messages = new ArrayList<>();
+        private FakeRandom fakeRandom;
+
+        public FakeOrderProcessor(boolean nextBoolean) {
+            fakeRandom = new FakeRandom(nextBoolean, 0D);
+        }
 
         @Override
         protected Random getRandom() {
-            return new FakeRandom(true, 0D);
+            return fakeRandom;
         }
 
         @Override
