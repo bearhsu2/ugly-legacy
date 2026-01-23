@@ -10,20 +10,21 @@ import java.util.Random;
 
 class OrderProcessorTest {
 
+    private final boolean LUCKY = true;
     private OrderProcessor sut;
     private List<Map<String, Object>> order;
 
     @Test
-    void random_discount_UNLUCKY() {
+    void VIP_cheap() {
 
-        given_sut(false);
+        given_sut(!LUCKY);
 
-        given_order(item(1_000D, 1));
+        given_order(item(900D, 1));
 
-        when_process();
+        when_process("VIP");
 
-        then_messages("Customer Type: ORDINARY",
-                "Total Price: 980.0",
+        then_messages("Customer Type: VIP",
+                "Total Price: 810.0",
                 "Status: Normal Order"
         );
 
@@ -41,8 +42,8 @@ class OrderProcessorTest {
         return Map.of("p", price, "q", quantity);
     }
 
-    private void when_process() {
-        sut.process(order, "ORDINARY", false);
+    private void when_process(String userType) {
+        sut.process(order, userType, false);
     }
 
     private void then_messages(String... messages) {
@@ -52,13 +53,45 @@ class OrderProcessorTest {
     }
 
     @Test
-    void random_discount_LUCKY() {
+    void VIP_expensive() {
 
-        given_sut(true);
+        given_sut(!LUCKY);
+
+        given_order(item(2_000D, 1));
+
+        when_process("VIP");
+
+        then_messages("Customer Type: VIP",
+                "Total Price: 1700.0",
+                "Status: Large Order"
+        );
+
+    }
+
+    @Test
+    void random_discount_UNLUCKY() {
+
+        given_sut(!LUCKY);
 
         given_order(item(1_000D, 1));
 
-        when_process();
+        when_process("ORDINARY");
+
+        then_messages("Customer Type: ORDINARY",
+                "Total Price: 980.0",
+                "Status: Normal Order"
+        );
+
+    }
+
+    @Test
+    void random_discount_LUCKY() {
+
+        given_sut(LUCKY);
+
+        given_order(item(1_000D, 1));
+
+        when_process("ORDINARY");
 
         then_messages("LUCKY! You got a random discount: 1%",
                 "Customer Type: ORDINARY",
@@ -78,7 +111,7 @@ class OrderProcessorTest {
                 item(20D, 2)
         );
 
-        when_process();
+        when_process("ORDINARY");
 
         then_messages("Customer Type: ORDINARY", "Total Price: 140.0", "Status: Normal Order");
 
