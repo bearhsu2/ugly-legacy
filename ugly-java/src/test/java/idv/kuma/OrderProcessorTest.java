@@ -16,17 +16,17 @@ class OrderProcessorTest {
     private List<Map<String, Object>> order;
 
     @Test
-    void shipping_enabled() {
+    void shipping_enabled_and_NOT_NEED_to_pay() {
 
         given_sut(!LUCKY);
 
-        given_order(item(501D, 1));
+        given_order(item(2_000D, 1));
 
-        when_process("ORDINARY", !SHIPPING_ENABLED);
+        when_process("VIP", SHIPPING_ENABLED);
 
-        then_messages("Customer Type: ORDINARY",
-                "Total Price: 481.0",
-                "Status: Normal Order"
+        then_messages("Customer Type: VIP",
+                "Total Price: 1700.0",
+                "Status: Large Order"
         );
 
     }
@@ -51,6 +51,22 @@ class OrderProcessorTest {
 
         Assertions.assertThat(((FakeOrderProcessor) sut).messages)
                 .containsExactly(messages);
+    }
+
+    @Test
+    void shipping_enabled_and_need_to_pay() {
+
+        given_sut(!LUCKY);
+
+        given_order(item(500D, 1));
+
+        when_process("ORDINARY", SHIPPING_ENABLED);
+
+        then_messages("Customer Type: ORDINARY",
+                "Total Price: 560.0",
+                "Status: Normal Order"
+        );
+
     }
 
     @Test
@@ -108,7 +124,7 @@ class OrderProcessorTest {
 
         given_order(item(2_000D, 1));
 
-        when_process("VIP", false);
+        when_process("VIP", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: VIP",
                 "Total Price: 1700.0",
@@ -160,7 +176,7 @@ class OrderProcessorTest {
                 item(20D, 2)
         );
 
-        when_process("ORDINARY", false);
+        when_process("ORDINARY", !SHIPPING_ENABLED);
 
         then_messages("Customer Type: ORDINARY", "Total Price: 140.0", "Status: Normal Order");
 
