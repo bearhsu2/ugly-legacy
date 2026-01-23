@@ -15,16 +15,16 @@ class OrderProcessorTest {
     private List<Map<String, Object>> order;
 
     @Test
-    void VIP_cheap() {
+    void ORDINARY_expensive() {
 
         given_sut(!LUCKY);
 
-        given_order(item(900D, 1));
+        given_order(item(501D, 1));
 
-        when_process("VIP");
+        when_process("ORDINARY");
 
-        then_messages("Customer Type: VIP",
-                "Total Price: 810.0",
+        then_messages("Customer Type: ORDINARY",
+                "Total Price: 481.0",
                 "Status: Normal Order"
         );
 
@@ -50,6 +50,38 @@ class OrderProcessorTest {
 
         Assertions.assertThat(((FakeOrderProcessor) sut).messages)
                 .containsExactly(messages);
+    }
+
+    @Test
+    void GOLD() {
+
+        given_sut(!LUCKY);
+
+        given_order(item(1000D, 1));
+
+        when_process("GOLD");
+
+        then_messages("Customer Type: GOLD",
+                "Total Price: 950.0",
+                "Status: Normal Order"
+        );
+
+    }
+
+    @Test
+    void VIP_cheap() {
+
+        given_sut(!LUCKY);
+
+        given_order(item(900D, 1));
+
+        when_process("VIP");
+
+        then_messages("Customer Type: VIP",
+                "Total Price: 810.0",
+                "Status: Normal Order"
+        );
+
     }
 
     @Test
