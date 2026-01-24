@@ -6,10 +6,10 @@ import java.util.Random;
 
 public class OrderProcessor {
 
-    private final GetByUserTypeDiscount getByUserTypeDiscount;
+    private final CalculateDiscountByUserType calculateDiscountByUserType;
 
-    public OrderProcessor(GetByUserTypeDiscount getByUserTypeDiscount1) {
-        getByUserTypeDiscount = getByUserTypeDiscount1;
+    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType1) {
+        calculateDiscountByUserType = calculateDiscountByUserType1;
     }
 
     public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
@@ -24,7 +24,7 @@ public class OrderProcessor {
         d = getPriceByLuckyDiscount(d);
         // -----------------------
 
-        d = getByUserTypeDiscount.getPriceByUserTypeDiscount(userType, d);
+        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(userType, d);
 
         d = getPriceByShipping(userType, shippingEnabled, d);
 
@@ -74,6 +74,6 @@ public class OrderProcessor {
     }
 
     private double getPriceByUserTypeDiscount(String userType, double d) {
-        return getByUserTypeDiscount.getPriceByUserTypeDiscount(userType, d);
+        return calculateDiscountByUserType.getPriceByUserTypeDiscount(userType, d);
     }
 }

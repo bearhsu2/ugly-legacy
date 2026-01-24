@@ -1,7 +1,7 @@
 package idv.kuma;
 
-public class GetByUserTypeDiscount {
-    public GetByUserTypeDiscount() {
+public class CalculateDiscountByUserType {
+    public CalculateDiscountByUserType() {
     }
 
     double getPriceByUserTypeDiscount(String userType, double d) {

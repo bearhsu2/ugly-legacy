@@ -202,7 +202,7 @@ class OrderProcessorTest {
         private FakeRandom fakeRandom;
 
         public FakeOrderProcessor(boolean nextBoolean) {
-            super(new GetByUserTypeDiscount());
+            super(new CalculateDiscountByUserType());
             fakeRandom = new FakeRandom(nextBoolean, 0D);
         }
 
