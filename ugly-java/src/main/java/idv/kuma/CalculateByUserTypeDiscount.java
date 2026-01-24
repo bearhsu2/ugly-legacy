@@ -2,11 +2,10 @@ package idv.kuma;
 
 import java.util.function.Consumer;
 
-public class CalculateByUserTypeDiscount {
-    public CalculateByUserTypeDiscount() {
-    }
+public class CalculateByUserTypeDiscount implements CalculatePrice{
 
-    double calculate(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {
+    @Override
+    public double calculate(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {
         if (userType.equals("VIP")) {
             if (d > 1000) d = d * 0.85;
             else d = d * 0.9;

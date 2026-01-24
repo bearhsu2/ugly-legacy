@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class OrderProcessor {
 
+    private final List<CalculatePrice> calculatePrices;
+
     private final CalculateByLuckyDiscount calculateByLuckyDiscount;
     private final CalculateByUserTypeDiscount calculateByUserTypeDiscount;
     private final CalculateByShipping calculateByShipping;
@@ -14,6 +16,12 @@ public class OrderProcessor {
                           CalculateByUserTypeDiscount calculateByUserTypeDiscount,
                           CalculateByShipping calculateByShipping,
                           printer printer) {
+
+        this.calculatePrices = List.of(
+                calculateByLuckyDiscount,
+                calculateByUserTypeDiscount,
+                calculateByShipping);
+
         this.calculateByLuckyDiscount = calculateByLuckyDiscount;
         this.calculateByUserTypeDiscount = calculateByUserTypeDiscount;
         this.calculateByShipping = calculateByShipping;
@@ -28,6 +36,7 @@ public class OrderProcessor {
             return;
         }
         d = getOriginalPrice(items, d);
+
 
         d = calculateByLuckyDiscount.calculate(d, userType, shippingEnabled, printer::print);
 
