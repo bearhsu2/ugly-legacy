@@ -7,10 +7,14 @@ import java.util.Random;
 public class OrderProcessor {
 
     private final CalculateDiscountByUserType calculateDiscountByUserType;
-    private final CalculatePrizeByShipping calculatePrizeByShipping = new CalculatePrizeByShipping();
+    private final CalculatePrizeByShipping calculatePrizeByShipping;
 
-    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType1) {
-        calculateDiscountByUserType = calculateDiscountByUserType1;
+    private Random random;
+
+    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, Random random1) {
+        random = random1;
+        this.calculateDiscountByUserType = calculateDiscountByUserType;
+        this.calculatePrizeByShipping = calculatePrizeByShipping;
     }
 
     public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
@@ -53,9 +57,8 @@ public class OrderProcessor {
 
     private double getPriceByLuckyDiscount(double d) {
         if (d > 500) {
-            Random r = getRandom();
-            if (r.nextBoolean()) { // 50% 機率
-                double rd = 0.01 + (0.1 - 0.01) * r.nextDouble(); // 1% ~ 10% 隨機
+            if (random.nextBoolean()) { // 50% 機率
+                double rd = 0.01 + (0.1 - 0.01) * random.nextDouble(); // 1% ~ 10% 隨機
                 print("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
                 d = d * (1 - rd);
             }
@@ -63,9 +66,6 @@ public class OrderProcessor {
         return d;
     }
 
-    protected Random getRandom() {
-        return new Random();
-    }
 
     private double getPriceByShipping(String userType, boolean shippingEnabled, double d) {
         return calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled);

@@ -197,23 +197,19 @@ class OrderProcessorTest {
 
     private class FakeOrderProcessor extends OrderProcessor {
 
-
         private List<String> messages = new ArrayList<>();
-        private FakeRandom fakeRandom;
 
         public FakeOrderProcessor(boolean nextBoolean) {
-            super(new CalculateDiscountByUserType());
-            fakeRandom = new FakeRandom(nextBoolean, 0D);
+            super(
+                    new CalculateDiscountByUserType(),
+                    new CalculatePrizeByShipping(),
+                    new FakeRandom(nextBoolean, 0D)
+            );
         }
 
         @Override
         protected void print(String message) {
             this.messages.add(message);
-        }
-
-        @Override
-        protected Random getRandom() {
-            return fakeRandom;
         }
 
 
