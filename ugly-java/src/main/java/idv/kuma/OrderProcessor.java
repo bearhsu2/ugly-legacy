@@ -38,11 +38,9 @@ public class OrderProcessor {
         d = getOriginalPrice(items, d);
 
 
-        d = calculateByLuckyDiscount.calculate(d, userType, shippingEnabled, printer::print);
-
-        d = calculateByUserTypeDiscount.calculate(d, userType, shippingEnabled, printer::print);
-
-        d = calculateByShipping.calculate(d, userType, shippingEnabled, printer::print);
+        for (CalculatePrice calculatePrice : this.calculatePrices) {
+            d = calculatePrice.calculate(d, userType, shippingEnabled, printer::print);
+        }
 
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
