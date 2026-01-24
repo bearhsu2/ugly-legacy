@@ -4,7 +4,7 @@ public class CalculateDiscountByUserType {
     public CalculateDiscountByUserType() {
     }
 
-    double getPriceByUserTypeDiscount(String userType, double d) {
+    double getPriceByUserTypeDiscount(double d, String userType) {
         if (userType.equals("VIP")) {
             if (d > 1000) d = d * 0.85;
             else d = d * 0.9;

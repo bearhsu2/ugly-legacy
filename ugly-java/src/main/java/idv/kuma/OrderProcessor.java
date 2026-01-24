@@ -25,9 +25,9 @@ public class OrderProcessor {
         d = getPriceByLuckyDiscount(d);
         // -----------------------
 
-        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(userType, d);
+        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType);
 
-        d = calculatePrizeByShipping.getPriceByShipping(userType, shippingEnabled, d);
+        d = calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled);
 
         print("Customer Type: " + userType);
         print("Total Price: " + Math.round(d * 100.0) / 100.0);
@@ -63,15 +63,15 @@ public class OrderProcessor {
         return d;
     }
 
-    private double getPriceByShipping(String userType, boolean shippingEnabled, double d) {
-        return calculatePrizeByShipping.getPriceByShipping(userType, shippingEnabled, d);
-    }
-
     protected Random getRandom() {
         return new Random();
     }
 
+    private double getPriceByShipping(String userType, boolean shippingEnabled, double d) {
+        return calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled);
+    }
+
     private double getPriceByUserTypeDiscount(String userType, double d) {
-        return calculateDiscountByUserType.getPriceByUserTypeDiscount(userType, d);
+        return calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType);
     }
 }
