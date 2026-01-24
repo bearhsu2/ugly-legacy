@@ -6,7 +6,7 @@ public class CalculateByShipping {
     public CalculateByShipping() {
     }
 
-    double getPriceByShipping(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {
+    double calculate(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {
         if (shippingEnabled) {
             if (!(userType.equals("VIP") && d > 500)) d = d + 60;
         }
