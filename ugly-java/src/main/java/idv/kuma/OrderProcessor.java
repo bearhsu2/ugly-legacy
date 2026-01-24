@@ -9,7 +9,7 @@ public class OrderProcessor {
     private final CalculateDiscountByUserType calculateDiscountByUserType;
     private final CalculatePrizeByShipping calculatePrizeByShipping;
 
-    private Random random;
+    private final Random random;
 
     public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, Random random) {
         this.random = random;
