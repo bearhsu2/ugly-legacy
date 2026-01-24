@@ -37,7 +37,7 @@ class OrderProcessorTest {
     }
 
     private void given_sut(boolean nextBoolean) {
-        sut = new FakeOrderProcessor(nextBoolean, printer);
+        sut = new FakeOrderProcessor(new CalculateByLucky(new FakeRandom(nextBoolean, 0D)), new CalculateDiscountByUserType(), new CalculatePrizeByShipping(), printer);
     }
 
     private void given_order(Map<String, Object>... items) {
@@ -206,12 +206,12 @@ class OrderProcessorTest {
     private class FakeOrderProcessor extends OrderProcessor {
 
 
-        public FakeOrderProcessor(boolean nextBoolean, FakePrinter printer) {
+        public FakeOrderProcessor(CalculateByLucky calculateByLucky, CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, FakePrinter printer) {
             super(
-                    new CalculateDiscountByUserType(),
-                    new CalculatePrizeByShipping(),
+                    calculateDiscountByUserType,
+                    calculatePrizeByShipping,
                     printer,
-                    new CalculateByLucky(new FakeRandom(nextBoolean, 0D))
+                    calculateByLucky
             );
         }
 
