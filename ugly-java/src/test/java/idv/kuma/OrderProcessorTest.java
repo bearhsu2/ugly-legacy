@@ -202,17 +202,18 @@ class OrderProcessorTest {
         private FakeRandom fakeRandom;
 
         public FakeOrderProcessor(boolean nextBoolean) {
+            super(new GetByUserTypeDiscount());
             fakeRandom = new FakeRandom(nextBoolean, 0D);
-        }
-
-        @Override
-        protected Random getRandom() {
-            return fakeRandom;
         }
 
         @Override
         protected void print(String message) {
             this.messages.add(message);
+        }
+
+        @Override
+        protected Random getRandom() {
+            return fakeRandom;
         }
 
 
