@@ -17,4 +17,18 @@ public class Order {
         Order o = new Order(itemList);
         return o;
     }
+
+    double getPrice() {
+        double d = 0D;
+
+        for (Item item : getItemList()) {
+            double p = item.getPrice();
+            int q = item.getQuantity();
+            if (p > 0 && q > 0) {
+                d += p * q;
+            }
+        }
+
+        return d;
+    }
 }
