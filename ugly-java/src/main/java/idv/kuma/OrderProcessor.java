@@ -21,8 +21,8 @@ public class OrderProcessor {
             printer.print("No items to process.");
             return;
         }
-        d = getOriginalPrice(items, d);
 
+        d = getOriginalPrice(items, d);
 
         for (CalculatePrice calculatePrice : this.calculatePrices) {
             d = calculatePrice.calculate(d, userType, shippingEnabled, printer::print);
@@ -31,8 +31,12 @@ public class OrderProcessor {
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
 
-        if (d > 1000) printer.print("Status: Large Order");
-        else printer.print("Status: Normal Order");
+        if (d > 1000) {
+            printer.print("Status: Large Order");
+        } else {
+            printer.print("Status: Normal Order");
+        }
+
     }
 
     private double getOriginalPrice(List<Map<String, Object>> items, double d) {
