@@ -31,11 +31,8 @@ public class OrderProcessor {
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
 
-        if (d > 1000) {
-            printer.print("Status: Large Order");
-        } else {
-            printer.print("Status: Normal Order");
-        }
+        printer.print("Status: " + (d > 1000 ? "Large Order" : "Normal Order"));
+
 
     }
 
