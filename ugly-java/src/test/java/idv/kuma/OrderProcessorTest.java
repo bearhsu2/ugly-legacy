@@ -207,19 +207,6 @@ class OrderProcessorTest {
 
     }
 
-    private class FakeOrderProcessor extends OrderProcessor {
-
-
-        public FakeOrderProcessor(CalculateByLucky calculateByLucky, CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, FakePrinter printer) {
-            super(
-                    calculateByLucky, calculateDiscountByUserType,
-                    calculatePrizeByShipping,
-                    printer
-            );
-        }
-
-    }
-
 
     private class FakeRandom extends Random {
         private final boolean nextBoolean;
