@@ -30,7 +30,6 @@ public class OrderProcessor {
 
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
-
         printer.print("Status: " + (d > 1000 ? "Large Order" : "Normal Order"));
 
 
