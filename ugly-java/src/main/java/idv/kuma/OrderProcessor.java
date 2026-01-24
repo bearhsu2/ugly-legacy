@@ -67,11 +67,4 @@ public class OrderProcessor {
     }
 
 
-    private double getPriceByShipping(String userType, boolean shippingEnabled, double d) {
-        return calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled);
-    }
-
-    private double getPriceByUserTypeDiscount(String userType, double d) {
-        return calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType);
-    }
 }
