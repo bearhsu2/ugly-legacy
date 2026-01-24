@@ -1,6 +1,8 @@
 package idv.kuma;
 
+import lombok.Getter;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,6 +16,12 @@ class OrderProcessorTest {
     private final boolean SHIPPING_ENABLED = true;
     private OrderProcessor sut;
     private List<Map<String, Object>> order;
+    private FakePrinter printer;
+
+    @BeforeEach
+    void setUp() {
+        this.printer = new FakePrinter();
+    }
 
     @Test
     void no_items() {
@@ -29,7 +37,7 @@ class OrderProcessorTest {
     }
 
     private void given_sut(boolean nextBoolean) {
-        sut = new FakeOrderProcessor(nextBoolean);
+        sut = new FakeOrderProcessor(nextBoolean, printer);
     }
 
     private void given_order(Map<String, Object>... items) {
@@ -42,7 +50,7 @@ class OrderProcessorTest {
 
     private void then_messages(String... messages) {
 
-        Assertions.assertThat(((FakeOrderProcessor) sut).messages)
+        Assertions.assertThat(printer.messages)
                 .containsExactly(messages);
     }
 
@@ -197,21 +205,15 @@ class OrderProcessorTest {
 
     private class FakeOrderProcessor extends OrderProcessor {
 
-        private List<String> messages = new ArrayList<>();
 
-        public FakeOrderProcessor(boolean nextBoolean) {
+        public FakeOrderProcessor(boolean nextBoolean, FakePrinter printer) {
             super(
                     new CalculateDiscountByUserType(),
                     new CalculatePrizeByShipping(),
-                    new FakeRandom(nextBoolean, 0D)
+                    new FakeRandom(nextBoolean, 0D),
+                    printer
             );
         }
-
-        @Override
-        protected void print(String message) {
-            this.messages.add(message);
-        }
-
 
     }
 
@@ -233,6 +235,17 @@ class OrderProcessorTest {
         @Override
         public double nextDouble() {
             return this.nextDouble;
+        }
+    }
+
+    @Getter
+    private class FakePrinter extends printer {
+
+        private List<String> messages = new ArrayList<>();
+
+        @Override
+        public void print(String message) {
+            this.messages.add(message);
         }
     }
 }
