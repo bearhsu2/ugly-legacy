@@ -15,14 +15,13 @@ public class OrderProcessor {
     }
 
     public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
-        double d = 0;
 
         if (items == null || items.size() <= 0) {
             printer.print("No items to process.");
             return;
         }
 
-        d = getOriginalPrice(items, d);
+        double d = getOriginalPrice(items);
 
         for (CalculatePrice calculatePrice : this.calculatePrices) {
             d = calculatePrice.calculate(d, userType, shippingEnabled, printer::print);
@@ -35,7 +34,8 @@ public class OrderProcessor {
 
     }
 
-    private double getOriginalPrice(List<Map<String, Object>> items, double d) {
+    private double getOriginalPrice(List<Map<String, Object>> items) {
+        double d = 0D;
         for (Map<String, Object> i : items) {
             double p = (double) i.get("p");
             int q = (int) i.get("q");
