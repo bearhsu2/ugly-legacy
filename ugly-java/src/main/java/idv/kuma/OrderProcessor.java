@@ -2,6 +2,7 @@ package idv.kuma;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrderProcessor {
 
@@ -17,15 +18,14 @@ public class OrderProcessor {
     public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
 
 
-        Order order = null;
-        try {
-            order = Order.of(items);
-        } catch (EmptyOrderException e) {
+        Optional<Order> orderOpt = Order.of(items);
+
+        if (orderOpt.isEmpty()) {
             printer.print("No items to process.");
             return;
         }
 
-        double processed = getPrice(order);
+        double processed = getPrice(orderOpt.get());
         for (CalculatePrice calculatePrice : this.calculatePrices) {
             processed = calculatePrice.calculate(processed, userType, shippingEnabled, printer::print);
         }
