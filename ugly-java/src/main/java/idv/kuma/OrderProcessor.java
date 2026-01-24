@@ -29,7 +29,7 @@ public class OrderProcessor {
         }
         d = getOriginalPrice(items, d);
 
-        d = calculateByLuckyDiscount.getPriceByLuckyDiscount(d, userType, shippingEnabled, printer::print);
+        d = calculateByLuckyDiscount.calculate(d, userType, shippingEnabled, printer::print);
 
         d = calculateByUserTypeDiscount.getPriceByUserTypeDiscount(d, userType, shippingEnabled, printer::print);
 
