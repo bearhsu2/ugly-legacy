@@ -7,6 +7,7 @@ import java.util.Random;
 public class OrderProcessor {
 
     private final CalculateDiscountByUserType calculateDiscountByUserType;
+    private final CalculatePrizeByShipping calculatePrizeByShipping = new CalculatePrizeByShipping();
 
     public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType1) {
         calculateDiscountByUserType = calculateDiscountByUserType1;
@@ -26,7 +27,7 @@ public class OrderProcessor {
 
         d = calculateDiscountByUserType.getPriceByUserTypeDiscount(userType, d);
 
-        d = getPriceByShipping(userType, shippingEnabled, d);
+        d = calculatePrizeByShipping.getPriceByShipping(userType, shippingEnabled, d);
 
         print("Customer Type: " + userType);
         print("Total Price: " + Math.round(d * 100.0) / 100.0);
@@ -63,10 +64,7 @@ public class OrderProcessor {
     }
 
     private double getPriceByShipping(String userType, boolean shippingEnabled, double d) {
-        if (shippingEnabled) {
-            if (!(userType.equals("VIP") && d > 500)) d = d + 60;
-        }
-        return d;
+        return calculatePrizeByShipping.getPriceByShipping(userType, shippingEnabled, d);
     }
 
     protected Random getRandom() {
