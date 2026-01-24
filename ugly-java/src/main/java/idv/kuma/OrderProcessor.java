@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class OrderProcessor {
 
-    public void process(List<Map<String, Object>> l, String t, boolean f) {
+    public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
         double d = 0;
 
-        if (l != null && l.size() > 0) {
-            for (Map<String, Object> i : l) {
+        if (items != null && items.size() > 0) {
+            for (Map<String, Object> i : items) {
                 double p = (double) i.get("p");
                 int q = (int) i.get("q");
                 if (p > 0 && q > 0) {
@@ -28,20 +28,20 @@ public class OrderProcessor {
             }
             // -----------------------
 
-            if (t.equals("VIP")) {
+            if (userType.equals("VIP")) {
                 if (d > 1000) d = d * 0.85;
                 else d = d * 0.9;
-            } else if (t.equals("GOLD")) {
+            } else if (userType.equals("GOLD")) {
                 d = d * 0.95;
             } else {
                 if (d > 500) d = d - 20;
             }
 
-            if (f) {
-                if (!(t.equals("VIP") && d > 500)) d = d + 60;
+            if (shippingEnabled) {
+                if (!(userType.equals("VIP") && d > 500)) d = d + 60;
             }
 
-            print("Customer Type: " + t);
+            print("Customer Type: " + userType);
             print("Total Price: " + Math.round(d * 100.0) / 100.0);
 
             if (d > 1000) print("Status: Large Order");
