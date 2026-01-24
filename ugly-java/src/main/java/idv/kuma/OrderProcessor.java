@@ -11,8 +11,8 @@ public class OrderProcessor {
 
     private Random random;
 
-    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, Random random1) {
-        random = random1;
+    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, Random random) {
+        this.random = random;
         this.calculateDiscountByUserType = calculateDiscountByUserType;
         this.calculatePrizeByShipping = calculatePrizeByShipping;
     }
