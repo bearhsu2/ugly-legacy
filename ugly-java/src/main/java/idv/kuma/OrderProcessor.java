@@ -2,18 +2,18 @@ package idv.kuma;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.function.Consumer;
 
 public class OrderProcessor {
 
     private final CalculateDiscountByUserType calculateDiscountByUserType;
     private final CalculatePrizeByShipping calculatePrizeByShipping;
 
-    private final Random random;
     private final printer printer;
+    private final CalculateByLucky calculateByLucky;
 
-    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, Random random, printer printer) {
-        this.random = random;
+    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, printer printer, CalculateByLucky calculateByLucky) {
+        this.calculateByLucky = calculateByLucky;
         this.calculateDiscountByUserType = calculateDiscountByUserType;
         this.calculatePrizeByShipping = calculatePrizeByShipping;
         this.printer = printer;
@@ -28,7 +28,7 @@ public class OrderProcessor {
         }
         d = getOriginalPrice(items, d);
 
-        d = getPriceByLuckyDiscount(d);
+        d = calculateByLucky.getPriceByLuckyDiscount(d, printer::print);
         // -----------------------
 
         d = calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType);
@@ -53,15 +53,8 @@ public class OrderProcessor {
         return d;
     }
 
-    private double getPriceByLuckyDiscount(double d) {
-        if (d > 500) {
-            if (random.nextBoolean()) { // 50% 機率
-                double rd = 0.01 + (0.1 - 0.01) * random.nextDouble(); // 1% ~ 10% 隨機
-                printer.print("LUCKY! You got a random discount: " + Math.round(rd * 100) + "%");
-                d = d * (1 - rd);
-            }
-        }
-        return d;
+    private double getPriceByLuckyDiscount(double d, Consumer<String> printingFunction) {
+        return calculateByLucky.getPriceByLuckyDiscount(d, printingFunction);
     }
 
 

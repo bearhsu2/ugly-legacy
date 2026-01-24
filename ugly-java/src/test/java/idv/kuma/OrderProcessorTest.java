@@ -210,8 +210,8 @@ class OrderProcessorTest {
             super(
                     new CalculateDiscountByUserType(),
                     new CalculatePrizeByShipping(),
-                    new FakeRandom(nextBoolean, 0D),
-                    printer
+                    printer,
+                    new CalculateByLucky(new FakeRandom(nextBoolean, 0D))
             );
         }
 
