@@ -9,16 +9,8 @@ public class OrderProcessor {
 
     private final printer printer;
 
-    public OrderProcessor(CalculateByLuckyDiscount calculateByLuckyDiscount,
-                          CalculateByUserTypeDiscount calculateByUserTypeDiscount,
-                          CalculateByShipping calculateByShipping,
-                          printer printer) {
-
-        this.calculatePrices = List.of(
-                calculateByLuckyDiscount,
-                calculateByUserTypeDiscount,
-                calculateByShipping);
-
+    public OrderProcessor(List<CalculatePrice> calculateByLuckyDiscount, printer printer) {
+        this.calculatePrices = calculateByLuckyDiscount;
         this.printer = printer;
     }
 
