@@ -38,7 +38,8 @@ class OrderProcessorTest {
 
     private void given_sut(boolean nextBoolean) {
         sut = new OrderProcessor(
-                new CalculateByLucky(new FakeRandom(nextBoolean, 0D)), new CalculateDiscountByUserType(),
+                new CalculateByLucky(new FakeRandom(nextBoolean, 0D)),
+                new CalculateDiscountByUserType(),
                 new CalculatePrizeByShipping(),
                 printer
         );
