@@ -7,9 +7,6 @@ public class OrderProcessor {
 
     private final List<CalculatePrice> calculatePrices;
 
-    private final CalculateByLuckyDiscount calculateByLuckyDiscount;
-    private final CalculateByUserTypeDiscount calculateByUserTypeDiscount;
-    private final CalculateByShipping calculateByShipping;
     private final printer printer;
 
     public OrderProcessor(CalculateByLuckyDiscount calculateByLuckyDiscount,
@@ -22,9 +19,6 @@ public class OrderProcessor {
                 calculateByUserTypeDiscount,
                 calculateByShipping);
 
-        this.calculateByLuckyDiscount = calculateByLuckyDiscount;
-        this.calculateByUserTypeDiscount = calculateByUserTypeDiscount;
-        this.calculateByShipping = calculateByShipping;
         this.printer = printer;
     }
 
