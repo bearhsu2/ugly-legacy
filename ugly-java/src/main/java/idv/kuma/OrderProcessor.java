@@ -12,7 +12,7 @@ public class OrderProcessor {
     private final printer printer;
     private final CalculateByLucky calculateByLucky;
 
-    public OrderProcessor(CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, printer printer, CalculateByLucky calculateByLucky) {
+    public OrderProcessor(CalculateByLucky calculateByLucky, CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, printer printer) {
         this.calculateByLucky = calculateByLucky;
         this.calculateDiscountByUserType = calculateDiscountByUserType;
         this.calculatePrizeByShipping = calculatePrizeByShipping;
