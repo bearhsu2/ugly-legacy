@@ -24,20 +24,19 @@ public class OrderProcessor {
 
         Order order = Order.of(items);
 
-        double d = getOriginalPrice(order);
-
+        double price = getPrice(order);
         for (CalculatePrice calculatePrice : this.calculatePrices) {
-            d = calculatePrice.calculate(d, userType, shippingEnabled, printer::print);
+            price = calculatePrice.calculate(price, userType, shippingEnabled, printer::print);
         }
 
         printer.print("Customer Type: " + userType);
-        printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
-        printer.print("Status: " + (d > 1000 ? "Large Order" : "Normal Order"));
+        printer.print("Total Price: " + Math.round(price * 100.0) / 100.0);
+        printer.print("Status: " + (price > 1000 ? "Large Order" : "Normal Order"));
 
 
     }
 
-    private double getOriginalPrice(Order o) {
+    private double getPrice(Order o) {
         double d = 0D;
 
         for (Item item : o.getItemList()) {
