@@ -2,8 +2,8 @@ package idv.kuma;
 
 import java.util.function.Consumer;
 
-public class CalculateDiscountByUserType {
-    public CalculateDiscountByUserType() {
+public class CalculateByUserTypeDiscount {
+    public CalculateByUserTypeDiscount() {
     }
 
     double getPriceByUserTypeDiscount(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {

@@ -3,10 +3,10 @@ package idv.kuma;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class CalculateByLucky {
+public class CalculateByLuckyDiscount {
     final Random random;
 
-    public CalculateByLucky(Random random) {
+    public CalculateByLuckyDiscount(Random random) {
         this.random = random;
     }
 

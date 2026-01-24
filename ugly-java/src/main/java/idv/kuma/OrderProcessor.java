@@ -5,16 +5,18 @@ import java.util.Map;
 
 public class OrderProcessor {
 
-    private final CalculateDiscountByUserType calculateDiscountByUserType;
-    private final CalculatePrizeByShipping calculatePrizeByShipping;
-
+    private final CalculateByLuckyDiscount calculateByLuckyDiscount;
+    private final CalculateByUserTypeDiscount calculateByUserTypeDiscount;
+    private final CalculateByShipping calculateByShipping;
     private final printer printer;
-    private final CalculateByLucky calculateByLucky;
 
-    public OrderProcessor(CalculateByLucky calculateByLucky, CalculateDiscountByUserType calculateDiscountByUserType, CalculatePrizeByShipping calculatePrizeByShipping, printer printer) {
-        this.calculateByLucky = calculateByLucky;
-        this.calculateDiscountByUserType = calculateDiscountByUserType;
-        this.calculatePrizeByShipping = calculatePrizeByShipping;
+    public OrderProcessor(CalculateByLuckyDiscount calculateByLuckyDiscount,
+                          CalculateByUserTypeDiscount calculateByUserTypeDiscount,
+                          CalculateByShipping calculateByShipping,
+                          printer printer) {
+        this.calculateByLuckyDiscount = calculateByLuckyDiscount;
+        this.calculateByUserTypeDiscount = calculateByUserTypeDiscount;
+        this.calculateByShipping = calculateByShipping;
         this.printer = printer;
     }
 
@@ -27,12 +29,12 @@ public class OrderProcessor {
         }
         d = getOriginalPrice(items, d);
 
-        d = calculateByLucky.getPriceByLuckyDiscount(d, userType, shippingEnabled, printer::print);
+        d = calculateByLuckyDiscount.getPriceByLuckyDiscount(d, userType, shippingEnabled, printer::print);
         // -----------------------
 
-        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType, shippingEnabled, printer::print);
+        d = calculateByUserTypeDiscount.getPriceByUserTypeDiscount(d, userType, shippingEnabled, printer::print);
 
-        d = calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled, printer::print);
+        d = calculateByShipping.getPriceByShipping(d, userType, shippingEnabled, printer::print);
 
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);

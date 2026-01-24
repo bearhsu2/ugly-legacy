@@ -2,8 +2,8 @@ package idv.kuma;
 
 import java.util.function.Consumer;
 
-public class CalculatePrizeByShipping {
-    public CalculatePrizeByShipping() {
+public class CalculateByShipping {
+    public CalculateByShipping() {
     }
 
     double getPriceByShipping(double d, String userType, boolean shippingEnabled, Consumer<String> printingFunction) {
