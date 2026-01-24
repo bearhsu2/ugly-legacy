@@ -12,6 +12,7 @@ public class Greeting {
         if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
             return "happy holiday";
         }
+
         return "good day";
     }
 
