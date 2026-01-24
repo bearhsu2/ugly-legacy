@@ -22,10 +22,9 @@ public class OrderProcessor {
             return;
         }
 
-        List<Item> itemList = items.stream().map(map -> new Item((double) map.get("p"), (int) map.get("q"))).toList();
-        Order o = new Order(itemList);
+        Order order = Order.of(items);
 
-        double d = getOriginalPrice(o);
+        double d = getOriginalPrice(order);
 
         for (CalculatePrice calculatePrice : this.calculatePrices) {
             d = calculatePrice.calculate(d, userType, shippingEnabled, printer::print);
