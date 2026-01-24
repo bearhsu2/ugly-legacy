@@ -12,9 +12,12 @@ public class Order {
     private final List<Item> itemList;
 
 
-    static Order of(List<Map<String, Object>> items) {
-        List<Item> itemList = items.stream().map(map -> new Item((double) map.get("p"), (int) map.get("q"))).toList();
-        Order o = new Order(itemList);
-        return o;
+    static Order of(List<Map<String, Object>> items) throws EmptyOrderException {
+
+        if (items == null || items.size() <= 0) {
+            throw new EmptyOrderException();
+        }
+
+        return new Order(items.stream().map(map -> new Item((double) map.get("p"), (int) map.get("q"))).toList());
     }
 }

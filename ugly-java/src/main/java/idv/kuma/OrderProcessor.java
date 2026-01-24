@@ -17,21 +17,22 @@ public class OrderProcessor {
     public void process(List<Map<String, Object>> items, String userType, boolean shippingEnabled) {
 
 
-        if (items == null || items.size() <= 0) {
+        Order order = null;
+        try {
+            order = Order.of(items);
+        } catch (EmptyOrderException e) {
             printer.print("No items to process.");
             return;
         }
 
-        Order order = Order.of(items);
-
-        double price = getPrice(order);
+        double processed = getPrice(order);
         for (CalculatePrice calculatePrice : this.calculatePrices) {
-            price = calculatePrice.calculate(price, userType, shippingEnabled, printer::print);
+            processed = calculatePrice.calculate(processed, userType, shippingEnabled, printer::print);
         }
 
         printer.print("Customer Type: " + userType);
-        printer.print("Total Price: " + Math.round(price * 100.0) / 100.0);
-        printer.print("Status: " + (price > 1000 ? "Large Order" : "Normal Order"));
+        printer.print("Total Price: " + Math.round(processed * 100.0) / 100.0);
+        printer.print("Status: " + (processed > 1000 ? "Large Order" : "Normal Order"));
 
 
     }
