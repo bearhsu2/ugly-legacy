@@ -2,7 +2,6 @@ package idv.kuma;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class OrderProcessor {
 
@@ -28,12 +27,12 @@ public class OrderProcessor {
         }
         d = getOriginalPrice(items, d);
 
-        d = calculateByLucky.getPriceByLuckyDiscount(d, printer::print);
+        d = calculateByLucky.getPriceByLuckyDiscount(d, userType, shippingEnabled, printer::print);
         // -----------------------
 
-        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType);
+        d = calculateDiscountByUserType.getPriceByUserTypeDiscount(d, userType, shippingEnabled, printer::print);
 
-        d = calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled);
+        d = calculatePrizeByShipping.getPriceByShipping(d, userType, shippingEnabled, printer::print);
 
         printer.print("Customer Type: " + userType);
         printer.print("Total Price: " + Math.round(d * 100.0) / 100.0);
@@ -51,10 +50,6 @@ public class OrderProcessor {
             }
         }
         return d;
-    }
-
-    private double getPriceByLuckyDiscount(double d, Consumer<String> printingFunction) {
-        return calculateByLucky.getPriceByLuckyDiscount(d, printingFunction);
     }
 
 
