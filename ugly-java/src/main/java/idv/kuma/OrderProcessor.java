@@ -25,30 +25,16 @@ public class OrderProcessor {
             return;
         }
 
-        double processed = getPrice(orderOpt.get());
+        double price = orderOpt.get().getPrice();
         for (CalculatePrice calculatePrice : this.calculatePrices) {
-            processed = calculatePrice.calculate(processed, userType, shippingEnabled, printer::print);
+            price = calculatePrice.calculate(price, userType, shippingEnabled, printer::print);
         }
 
         printer.print("Customer Type: " + userType);
-        printer.print("Total Price: " + Math.round(processed * 100.0) / 100.0);
-        printer.print("Status: " + (processed > 1000 ? "Large Order" : "Normal Order"));
+        printer.print("Total Price: " + Math.round(price * 100.0) / 100.0);
+        printer.print("Status: " + (price > 1000 ? "Large Order" : "Normal Order"));
 
 
-    }
-
-    private double getPrice(Order o) {
-        double d = 0D;
-
-        for (Item item : o.getItemList()) {
-            double p = item.getPrice();
-            int q = item.getQuantity();
-            if (p > 0 && q > 0) {
-                d += p * q;
-            }
-        }
-
-        return d;
     }
 
 

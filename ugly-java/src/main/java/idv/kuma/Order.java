@@ -23,4 +23,18 @@ public class Order {
                 new Order(items.stream().map(map -> new Item((double) map.get("p"), (int) map.get("q"))).toList())
         );
     }
+
+    double getPrice() {
+        double d = 0D;
+
+        for (Item item : getItemList()) {
+            double p = item.getPrice();
+            int q = item.getQuantity();
+            if (p > 0 && q > 0) {
+                d += p * q;
+            }
+        }
+
+        return d;
+    }
 }
